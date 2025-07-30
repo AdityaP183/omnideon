@@ -1,25 +1,22 @@
-export const characterTypeDefs = `#graphql
-  type Character {
-    id: ID!
-    name: String!
-    alias: String
-    alignment: Alignment
-    powers: [String!]!
-    publisher: String!
-    createdBy: String
-    debutYear: Int
-    imageUrl: String
-  }
+import { gql } from "graphql-tag";
 
-  enum Alignment {
-    HERO
-    VILLAIN
-    NEUTRAL
-    ANTI_HERO
-  }
+export const characterTypeDefs = gql`
+	type Character {
+		id: ID!
+		name: String!
+		image: String
 
-  extend type Query {
-    characters: [Character!]!
-    character(id: ID!): Character
-  }
+		alias: Alias
+		appearance: Appearance
+		background: Background
+		biography: Biography
+		publication: Publication
+		attributes: Attributes
+		connection: Connection
+	}
+
+	extend type Query {
+		characters: [Character!]!
+		character(id: ID!): Character
+	}
 `;

@@ -1,0 +1,164 @@
+Project Omnideon {
+  database_type: "PostgreSQL"
+}
+
+/* ─────────────── Enums ─────────────── */
+Enum Publisher {
+  Marvel
+  DC
+  Image
+}
+
+Enum GENDER {
+  male
+  female
+  others
+}
+
+/* ─────────────── Core ─────────────── */
+Table Character {
+  id int [pk]
+  name varchar
+  image text
+
+  alias_id int [ref: > Alias.id]
+  connection_id int [ref: > Connection.id]
+  appearance_id int [ref: > Appearance.id]
+  background_id int [ref: > Background.id]
+  biography_id int [ref: > Biography.id]
+  publication_id int [ref: > Publication.id]
+  attributes_id int [ref: > Attributes.id]
+}
+
+/* ─────────────── Connection ─────────────── */
+Table Connection {
+  id int [pk]
+  affiliation_ids int[] [ref: > Affiliation.id]
+  relative_ids int[] [ref: > Relative.id]
+}
+
+/* ─────────────── Appearance ─────────────── */
+Table Appearance {
+  id int [pk]
+  gender GENDER
+  race varchar
+  height_id int [ref: > Height.id]
+  weight_id int [ref: > Weight.id]
+  eye_color varchar
+  hair_color varchar
+}
+
+/* ─────────────── Background ─────────────── */
+Table Background {
+  id int [pk]
+  origin varchar
+  living_status varchar
+  places_of_birth varchar[]
+  cause_of_death_id int [ref: > CauseOfDeath.id]
+}
+
+/* ─────────────── Biography ─────────────── */
+Table Biography {
+  id int [pk]
+  identity varchar
+  citizenship varchar
+  occupations varchar[]
+  education varchar
+  base_of_operations_id int [ref: > BaseOfOperation.id]
+}
+
+/* ─────────────── Publication ─────────────── */
+Table Publication {
+  id int [pk]
+  publisher Publisher
+  debut_year int
+  debut_month int
+  first_appearance varchar
+  creator_ids int[] [ref: > Creator.id]
+}
+
+/* ─────────────── Attributes ─────────────── */
+Table Attributes {
+  id int [pk]
+  power_ids int[] [ref: > Power.id]
+  ability_ids int[] [ref: > Ability.id]
+  weakness_ids int[] [ref: > Weakness.id]
+  equipment_ids int[] [ref: > Equipment.id]
+}
+
+/* ─────────────── Supplementary Tables ─────────────── */
+Table Alias {
+  id int [pk]
+  name varchar
+  alias_type varchar
+  is_current bool
+}
+
+Table Affiliation {
+  id int [pk]
+  name varchar
+  affiliation_type varchar
+}
+
+Table Relative {
+  id int [pk]
+  name varchar
+  relation varchar         // e.g. "Aunt May"
+  relation_type varchar    // e.g. "aunt", "clone", etc.
+  status varchar           // e.g. "alive", "deceased"
+}
+
+Table Height {
+  id int [pk]
+  in_inches varchar
+  in_cm varchar
+}
+
+Table Weight {
+  id int [pk]
+  in_kg varchar
+  in_pounds varchar
+}
+
+Table CauseOfDeath {
+  id int [pk]
+  cause varchar
+  killer varchar
+  extra_info varchar
+}
+
+Table BaseOfOperation {
+  id int [pk]
+  location varchar
+  is_current bool
+}
+
+Table Creator {
+  id int [pk]
+  name varchar
+  image text
+}
+
+Table Power {
+  id int [pk]
+  name varchar
+  description text
+}
+
+Table Ability {
+  id int [pk]
+  name varchar
+  description text
+}
+
+Table Weakness {
+  id int [pk]
+  name varchar
+  description text
+}
+
+Table Equipment {
+  id int [pk]
+  name varchar
+  description text
+}
